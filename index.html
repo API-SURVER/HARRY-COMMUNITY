@@ -1,0 +1,255 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>𝐇𝐚𝐫𝐫𝐲 𝐂𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700;900&display=swap');
+
+        :root {
+            --neon-border: #00ffff;
+            --period-bg: #ffcc00;
+        }
+
+        * { box-sizing: border-box; }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            overflow: hidden; background: #000;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .game-container { position: absolute; inset: 0; z-index: 1; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        /* Floating Tool Box */
+        .tool-box {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 210px;
+            z-index: 9999;
+            touch-action: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Live Period Pill */
+        .period-pill {
+            background: #000;
+            border: 2px solid var(--period-bg);
+            color: var(--period-bg);
+            padding: 3px 18px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            margin-bottom: -15px;
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+
+        /* Main Card */
+        .tech-card {
+            position: relative;
+            width: 195px;
+            background: rgba(0, 0, 0, 0.95);
+            border-radius: 35px;
+            padding: 22px 10px 12px 10px; /* প্যাডিং কিছুটা কমানো হয়েছে */
+            text-align: center;
+            border: 2px solid var(--neon-border);
+            color: white;
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        /* Outside Rotating Roshni */
+        .roshni {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 1;
+            filter: blur(1px);
+            box-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+            animation: orbit 5s linear infinite;
+        }
+
+        .l1 { color: #00ffff; background: #00ffff; animation-delay: 0s; }
+        .l2 { color: #ff00ff; background: #ff00ff; animation-delay: -1.25s; }
+        .l3 { color: #00ff00; background: #00ff00; animation-delay: -2.5s; }
+        .l4 { color: #ffcc00; background: #ffcc00; animation-delay: -3.75s; }
+
+        @keyframes orbit {
+            0%   { top: -12px; left: -12px; }
+            25%  { top: -12px; left: calc(100% - 4px); }
+            50%  { top: calc(100% - 4px); left: calc(100% - 4px); }
+            75%  { top: calc(100% - 4px); left: -12px; }
+            100% { top: -12px; left: -12px; }
+        }
+
+        .brand-name { color: #ffcc00; font-size: 9px; letter-spacing: 0.5px; text-transform: uppercase; }
+        .prediction-label { color: #fff; font-size: 11px; font-weight: 900; letter-spacing: 1.5px; margin-bottom: 0px; }
+        
+        /* Prediction Output */
+        .res-output { 
+            font-size: 40px; /* ছোট করা হয়েছে */
+            font-weight: 900; 
+            line-height: 1;
+            margin: 4px 0;
+            text-shadow: 0 0 15px currentColor;
+            text-transform: uppercase;
+        }
+
+        .tech-input { width: 90%; padding: 6px; background: #111; border: 1px solid #333; border-radius: 8px; color: #00ffff; text-align: center; font-size: 11px; outline: none; margin-bottom: 8px; }
+        .tech-btn { width: 90%; padding: 8px; border: none; border-radius: 8px; background: #00ffff; color: #000; font-weight: 900; cursor: pointer; font-size: 11px; }
+        
+        /* Telegram Join Button - Small & Stylish */
+        .tg-join-btn {
+            display: inline-block;
+            width: 90%;
+            padding: 5px 8px;
+            margin-top: 8px;
+            background: #0088cc;
+            color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 0 10px rgba(0,136,204,0.5);
+            transition: all 0.2s;
+        }
+        .tg-join-btn:hover {
+            background: #0077b5;
+            box-shadow: 0 0 15px #0088cc;
+        }
+        
+        .timer-box { font-size: 10px; color: #888; margin-top: 5px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 3px; }
+        .control-btns { display: flex; gap: 6px; margin-top: 8px; justify-content: center; }
+        .btn-small { padding: 3px 10px; font-size: 8px; border-radius: 5px; background: #222; color: #fff; border: 1px solid #444; font-weight: bold; }
+
+        #mini-trigger { position: fixed; top: 120px; left: 0; padding: 10px 15px; background: #000; border: 2px solid #00ffff; border-radius: 0 12px 12px 0; z-index: 10000; display: none; color: white; font-size: 10px; font-weight: 900; }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <iframe src="https://tkclub7.com/#/register?invitationCode=56186192434"><"https://tkclub2.com/#/home/AllLotteryGames/WinGo?id=1"></iframe>
+    </div>
+
+    <div class="tool-box" id="moveBox">
+        <div class="roshni l1"></div>
+        <div class="roshni l2"></div>
+        <div class="roshni l3"></div>
+        <div class="roshni l4"></div>
+
+        <div class="period-pill">PERIOD: <span id="period-display">----</span></div>
+        
+        <div class="tech-card" id="mainCard">
+            <!-- Login Interface -->
+            <div id="login-panel">
+                <div class="brand-name">𝐇𝐚𝐫𝐫𝐲 𝐂𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲</div>
+                <div style="margin-top:10px;">
+                    <!-- Password Hide করা হয়েছে -->
+                    <input type="password" id="pass-key" class="tech-input" placeholder="ENTER KEY">
+                    <button class="tech-btn" onclick="checkLogin()">UNLOCK TOOL</button>
+                    
+                    <!-- TG JOIN Button - ছোট এবং নিচে যোগ করা হয়েছে -->
+                    <a href="https://t.me/jannat_commouniy1" target="_blank" class="tg-join-btn">📱 JOIN TG CHANNEL</a>
+                </div>
+            </div>
+
+            <!-- Prediction Interface -->
+            <div id="main-panel" style="display:none;">
+                <div class="brand-name">KIGN OF MAHIM</div>
+                <div class="prediction-label">𝐇𝐚𝐫𝐫𝐲 𝐂𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲</div>
+                <div id="res-text" class="res-output" style="color: #00ff00;">WAIT</div>
+                <div class="timer-box">30S TIMER: <span id="time-left" style="color:#00ffff;">--</span>s</div>
+                
+                <div class="control-btns">
+                    <button class="btn-small" onclick="hideTool()">HIDE</button>
+                    <button class="btn-small" style="color:#ff4444" onclick="location.reload()">EXIT</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mini-trigger" onclick="showTool()">SHOW</div>
+
+    <script>
+        // আপনার দেওয়া প্যাটার্ন লজিক
+        const myPattern = ["BIG", "BIG", "BIG", "SMALL", "BIG", "BIG", "BIG", "SMALL", "SMALL", "SMALL", "BIG", "BIG", "BIG", "SMALL", "SMALL", "SMALL", "BIG", "SMALL", "BIG", "SMALL", "SMALL", "BIG", "BIG", "BIG", "SMALL", "SMALL", "SMALL", "SMALL", "BIG", "BIG", "BIG", "SMALL", "BIG", "BIG", "BIG", "BIG", "BIG", "SMALL", "SMALL", "BIG", "BIG", "BIG", "SMALL", "SMALL", "BIG", "BIG", "BIG", "BIG", "SMALL"];
+
+        function checkLogin() {
+            // পাসওয়ার্ড এখন harryvai
+            if(document.getElementById("pass-key").value === "harryvipmember") {
+                document.getElementById("login-panel").style.display = "none";
+                document.getElementById("main-panel").style.display = "block";
+                // বক্সটি একটু ছোট করার জন্য প্যাডিং কমানো হলো
+                document.getElementById("mainCard").style.padding = "18px 10px 10px 10px";
+                startEngine();
+            } else { 
+                // ১ বার ভুল পাসওয়ার্ড দিলে TG লিংকে নিয়ে যাবে
+                window.location.href = "https://t.me/jannat_commouniy1";
+            }
+        }
+
+        function hideTool() {
+            document.getElementById("moveBox").style.display = "none";
+            document.getElementById("mini-trigger").style.display = "block";
+        }
+
+        function showTool() {
+            document.getElementById("moveBox").style.display = "flex";
+            document.getElementById("mini-trigger").style.display = "none";
+        }
+
+        const box = document.getElementById("moveBox");
+        let isDragging = false, px, py;
+        box.addEventListener('touchstart', e => {
+            if(e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+            isDragging = true;
+            px = e.touches[0].clientX - box.offsetLeft;
+            py = e.touches[0].clientY - box.offsetTop;
+        });
+        box.addEventListener('touchmove', e => {
+            if(!isDragging) return;
+            box.style.left = (e.touches[0].clientX - px) + (box.offsetWidth/2) + "px";
+            box.style.top = (e.touches[0].clientY - py) + "px";
+            e.preventDefault();
+        }, {passive: false});
+        box.addEventListener('touchend', () => isDragging = false);
+
+        function startEngine() {
+            function update() {
+                const now = new Date();
+                const secondsSinceMidnight = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+                const currentPeriodRound = Math.floor(secondsSinceMidnight / 30) + 1;
+                
+                document.getElementById("period-display").innerText = currentPeriodRound;
+
+                const remainingSeconds = 30 - (now.getSeconds() % 30);
+                document.getElementById("time-left").innerText = remainingSeconds;
+
+                // প্যাটার্ন অনুযায়ী পিডিকশন লজিক
+                if (remainingSeconds === 30 || document.getElementById("res-text").innerText === "WAIT") {
+                    // পিরিয়ড নাম্বার অনুযায়ী প্যাটার্ন থেকে রেজাল্ট নেয়া (সিরিয়াল ঠিক রাখতে)
+                    const patternIndex = (currentPeriodRound - 1) % myPattern.length; // ইনডেক্স 0 থেকে শুরু করার জন্য -1 করা হয়েছে
+                    const res = myPattern[patternIndex];
+                    
+                    const el = document.getElementById("res-text");
+                    el.innerText = res;
+                    el.style.color = res === "BIG" ? "#00ff00" : "#ff0066";
+                }
+            }
+            setInterval(update, 1000);
+            update();
+        }
+    </script>
+
+</body>
+</html>
